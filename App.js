@@ -13,14 +13,14 @@ state = {
       title :" tondre le gazon",
       project: "Le jardin",
       id: uuidv4(),
-      // elapsed : 5456099,
+      elapsed : 5456099,
       isRunning : true
     },
     {
       title :" Faire à manger",
       project: "Cuisine",
       id: uuidv4(),
-      // elapsed : 1273998,
+      elapsed : 1273998,
       isRunning : false
     },
   ]
@@ -31,7 +31,29 @@ handleCreateFormSubmit = timer => {
     timers: [newTimer(timer), ...timers],
   })
 }
+handlerForSubmit= attrs => {
+const { timers } = this.state;
+this.setState({
+  timers: timers.map(timer => {
+    if(timer.id === attrs.id) {
+      const { title, project } = attrs;
+      return {
+        ...timer,
+        title, 
+        project,
+      } 
+    } else {
+      return timer
+    }
+  })
+})
+}
 
+handleRemovePress = timerId => {
+  this.setState({ 
+  timers : this.state.timers.filter(timer => timer.id !== timerId)
+})
+}
   render() {
     const { timers} = this.state;
     return (
@@ -48,6 +70,8 @@ handleCreateFormSubmit = timer => {
             project={project}
             elapsed={elapsed}
             isRunning={isRunning}
+            onFormSubmit={this.handlerForSubmit}
+            onRemovePress={this.handleRemovePress}
             />
           ))}
           

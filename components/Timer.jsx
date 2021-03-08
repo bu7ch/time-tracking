@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-// import {milisecondsToHuman } from '../utils/TimerUtils';
+import { millisecondsToHuman } from '../utils/TimerUtils';
 import TimerButton from './TimerButton';
 
-export default function Timer({ title, project, elapsed}) {
-  // const elapsedString = milisecondsToHuman(elapsed);
+export default class Timer extends Component{
+  handleRemovePress = () => {
+    const { id, onRemovePress } = this.props;
+    onRemovePress(id);
+  }
 
+  render() {
+  const { elapsed, title, project, onEditPress} = this.props;
+  const elapsedString = millisecondsToHuman(elapsed);
   return(
     <View style={styles.timerContainer}>
       <Text style={styles.title}>{title}</Text>
       <Text>{project}</Text>
-      {/* <Text style={styles.elapsedTime}>{elapsedString}</Text> */}
+      <Text style={styles.elapsedTime}>{elapsedString}</Text>
       <View style={styles.buttonGroup}>
-        <TimerButton color="blue" small title="Edit"/>
-        <TimerButton color="blue" small title="Remove"/>
+        <TimerButton color="blue" small title="Edit" onPress={onEditPress}/>
+        <TimerButton color="blue" small title="Remove" onPress= {this.handleRemovePress}/>
       </View>
       <TimerButton color="#21BA45" title="Start"/>
       </View>
   )
+}
 }
 const styles = StyleSheet.create({
 timerContainer: {
